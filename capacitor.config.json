@@ -1,0 +1,10 @@
+{
+  "appId": "com.hcm.snapchat",
+  "appName": "Snapchat HCM",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": false
+    }
+  }
+}
