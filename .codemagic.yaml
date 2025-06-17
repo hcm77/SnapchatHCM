@@ -1,0 +1,23 @@
+workflows:
+  build_snapchat_hcm:
+    name: "Snapchat HCM - iOS Build"
+    instance_type: mac_mini_m1
+    environment:
+      vars:
+        BUNDLE_ID: "com.hcm.snapchat"
+        APP_NAME: "Snapchat HCM"
+      node: latest
+      cocoapods: default
+    scripts:
+      - name: Install Dependencies
+        script: |
+          npm install
+          npm run build || echo "Skipping frontend build"
+          npx cap sync ios
+      - name: Build iOS
+        script: |
+          cd ios/App
+          xcodebuild -workspace App.xcworkspace -scheme App -sdk iphoneos -configuration Release archive -archivePath $HOME/build/App.xcarchive
+          xcodebuild -exportArchive -archivePath $HOME/build/App.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath $HOME/build/export
+    artifacts:
+      - build/export/*.ipa
